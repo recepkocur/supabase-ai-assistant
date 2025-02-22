@@ -1,0 +1,42 @@
+services:
+  api-trigger-ai-assistant-dev:
+    container_name: api-trigger-ai-assistant-dev
+    image: kocur.app/api-trigger-ai-assistant:dev
+    build:
+      dockerfile: dockerfile.dev
+      args:
+        - PORT=7102
+        - NODE_ENV=development
+        - OPENAI_API_KEY=${OPENAI_API_KEY}
+        - API_SECRET=${API_SECRET}
+    ports:
+      - "7101:7102"
+    environment:
+      - PORT=7102
+      - NODE_ENV=development
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - API_SECRET=${API_SECRET}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api-trigger-ai-assistant-dev.rule=Host(`${API_DEV_URL}`) && PathPrefix(`/trigger-ai-assistant`)
+      - traefik.http.routers.api-trigger-ai-assistant-dev.tls=true
+      - traefik.http.routers.api-trigger-ai-assistant-dev.tls.certresolver=letsencrypt
+      - traefik.http.services.api-trigger-ai-assistant-dev.loadbalancer.server.port=7102
+      - traefik.http.middlewares.api-trigger-ai-assistant-dev-timeout.headers.customrequestheaders.X-Timeout=60
+      - traefik.http.routers.api-trigger-ai-assistant-dev.middlewares=api-trigger-ai-assistant-dev-timeout
+    networks:
+      - proxy
+    volumes:
+      - /app/node_modules
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  proxy:
+    driver: bridge
+    external: true
+    name: proxy
