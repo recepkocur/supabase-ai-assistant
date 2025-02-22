@@ -1,7 +1,7 @@
 services:
-  api-trigger-ai-assistant:
-    container_name: api-trigger-ai-assistant
-    image: kocur.app/api-trigger-ai-assistant:latest
+  supabase-ai-assistant:
+    container_name: supabase-ai-assistant
+    image: kocur.app/supabase-ai-assistant:latest
     build:
       dockerfile: dockerfile.prod
       args:
@@ -18,12 +18,12 @@ services:
       - API_SECRET=${API_SECRET}
     labels:
       - traefik.enable=true
-      - traefik.http.routers.api-trigger-ai-assistant.rule=Host(`${API_PROD_URL}`) && PathPrefix(`/trigger-ai-assistant`)
-      - traefik.http.routers.api-trigger-ai-assistant.tls=true
-      - traefik.http.routers.api-trigger-ai-assistant.tls.certresolver=letsencrypt
-      - traefik.http.services.api-trigger-ai-assistant.loadbalancer.server.port=7202
-      - traefik.http.middlewares.api-trigger-ai-assistant-timeout.headers.customrequestheaders.X-Timeout=60
-      - traefik.http.routers.api-trigger-ai-assistant.middlewares=api-trigger-ai-assistant-timeout
+      - traefik.http.routers.supabase-ai-assistant.rule=Host(`${API_PROD_URL}`) && PathPrefix(`/trigger-ai-assistant`)
+      - traefik.http.routers.supabase-ai-assistant.tls=true
+      - traefik.http.routers.supabase-ai-assistant.tls.certresolver=letsencrypt
+      - traefik.http.services.supabase-ai-assistant.loadbalancer.server.port=7202
+      - traefik.http.middlewares.supabase-ai-assistant-timeout.headers.customrequestheaders.X-Timeout=60
+      - traefik.http.routers.supabase-ai-assistant.middlewares=supabase-ai-assistant-timeout
     networks:
       - proxy
     volumes:

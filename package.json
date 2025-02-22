@@ -1,5 +1,5 @@
 {
-  "name": "api-trigger-ai-assistant",
+  "name": "supabase-ai-assistant",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
