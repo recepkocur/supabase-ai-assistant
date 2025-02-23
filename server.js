@@ -50,6 +50,8 @@ const validateApiSecret = (req, res, next) => {
   if (!apiSecret || apiSecret !== process.env.API_SECRET) {
     return res.status(401).json({
       error: "Unauthorized",
+      req: req.headers,
+      reqBody: req.body,
     });
   }
 
